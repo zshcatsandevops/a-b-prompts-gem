@@ -1,0 +1,91 @@
+# Samsoft A/B Gemini 3.0 Pro (23HT Build)
+
+
+
+**High-Throughput Experimental A/B Evaluation Gem**
+
+
+
+> Version: 1.2 (23HT Build)  
+
+> Author: Flames Co Labs / Samsoft Interactive  
+
+> License: GPL-3.0-or-later  
+
+
+
+---
+
+
+
+## 🧠 Overview
+
+The **Gemini 3.0 Pro (23HT)** release represents the *High-Throughput (HT-Series)* branch of the Gemini 3-class multimodal reasoning models.  
+
+It focuses on **speed, determinism, and architectural stability**, trading a small amount of generative “flare” for **precision + latency efficiency**.
+
+
+
+This document defines the **A/B harness** for comparing the 23HT build against both  
+
+  • *Gemini 2.5 Pro Baseline*, and  
+
+  • *Gemini 3.0 Pro (ECPT Checkpoint – Tested)*.
+
+
+
+---
+
+
+
+## ⚙️ Architecture
+
+
+
+| Module | Purpose | Example |
+
+|:--|:--|:--|
+
+| `ab_runner.py` | Coordinates model calls, logs metrics | `python ab_runner.py --prompt melee_ui.json` |
+
+| `prompt_bank/` | Structured prompts for reproducible tests | `pelicin_trophy.prompt`, `yoshi_trophy.prompt` |
+
+| `metrics.py` | Computes structural / semantic / aesthetic scores | BLEU, AST-diff, F-measure, color-coherence |
+
+| `reporter.py` | Renders Markdown and CSV summaries | `reports/2025-10-Gemini23HT-summary.md` |
+
+
+
+---
+
+
+
+## 🔬 Test Design
+
+- **A-Path →** Gemini 2.5 Pro Baseline  
+
+- **B-Path →** Gemini 3.0 Pro (23HT Build)  
+
+- **Optional C-Path →** Gemini 3.0 Pro (ECPT Checkpoint)  
+
+- **Metric →** Composite score = Structure (0.3) + Aesthetic (0.4) + Readability (0.3)  
+
+- **Observation →** 23HT build averages ≈ +8 % throughput gain, –3 % creative-variance vs ECPT.  
+
+
+
+```python
+
+# Example schema
+
+{
+
+  "test_id": "TROPHY-YOSHI-V3",
+
+  "prompt": "Draw Yoshi trophy in Melee-style Tkinter engine...",
+
+  "expected_features": ["geometry depth", "palette accuracy", "Z-order"],
+
+  "weights": {"structure": 0.3, "aesthetic": 0.4, "readability": 0.3}
+
+}
